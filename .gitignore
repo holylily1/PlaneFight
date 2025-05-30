@@ -1,0 +1,17 @@
+# Cocos Creator 3.x自动生成
+library/
+temp/
+build/
+node_modules/
+*.log
+
+# 场景备份
+*.bak
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 编辑器文件
+.vscode/
+.idea/
