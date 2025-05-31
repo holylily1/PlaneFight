@@ -1,7 +1,7 @@
  飞机大战 (PlaneFight)
 
 基于Cocos Creator 3.8.2开发的2D射击游戏
-
+跟随视频开发：bilibili.com/video/BV1csHseJETT，在此基础上添加了更多基础功能，完善了游戏逻辑。
 ## 项目结构
 
 PlaneFight/
