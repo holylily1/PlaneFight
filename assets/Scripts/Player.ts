@@ -3,6 +3,8 @@ import { Reward, RewardType } from './Reward';
 import { GameManager } from './GameManager';
 import { HpUI } from './UI/HpUI';
 import { AudioMgr } from './AudioMgr';
+import { Bullet } from './Bullet';
+import { BulletPoolManager } from './BulletPoolManager';
 const { ccclass, property } = _decorator;
 
 /**
@@ -21,11 +23,7 @@ enum ShootType {
  */
 @ccclass('Player')
 export class Player extends Component {
-    // ======================
-    // 对象池相关属性
-    // ======================
-    public bullet1Pool: NodePool = null!;  // 单发子弹对象池
-    public bullet2Pool: NodePool = null!;  // 双发子弹对象池
+    // 不再需要直接管理对象池，使用BulletPoolManager代替
 
     // ======================
     // 射击相关属性
@@ -108,16 +106,9 @@ export class Player extends Component {
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
-        //对象池1
-        this.bullet1Pool = new NodePool();
-        this.bullet2Pool = new NodePool();
-        let initCount = 10;
-        for (let i = 0; i < initCount; ++i) {
-            let bullet1 = instantiate(this.bullet1Prefab); // 创建节点
-            let bullet2 = instantiate(this.bullet2Prefab);
-            this.bullet1Pool.put(bullet1); // 通过 put 接口放入对象池
-            this.bullet2Pool.put(bullet2); // 通过 put 接口放入对象池
-        }
+
+        // 初始化子弹对象池
+        BulletPoolManager.instance.init(this.bullet1Prefab, this.bullet2Prefab, 10);
     }
 
     protected onDestroy(): void {
@@ -129,8 +120,9 @@ export class Player extends Component {
         if (collider) {
             collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
-        // 清空对象池
-        this.bullet1Pool.clear();
+
+        // 不需要在这里清理对象池，因为可能有多个Player实例共享同一个对象池
+        // 如果确实需要清理，可以在游戏结束时调用 BulletPoolManager.instance.clear()
     }
     // ======================
     // 碰撞处理方法
@@ -280,17 +272,28 @@ export class Player extends Component {
         if (this.shootTimer > this.shootRate) {
             AudioMgr.inst.playOneShot(this.bulletAudio, 0.05);
             this.shootTimer = 0;
+
+            // 从对象池管理器获取子弹
             let bullet1;
-            if (this.bullet1Pool.size() > 0) {
-                bullet1 = this.bullet1Pool.get();
+            const bulletPool = BulletPoolManager.instance.bullet1Pool;
+
+            if (bulletPool.size() > 0) {
+                bullet1 = bulletPool.get();
             } else {
                 bullet1 = instantiate(this.bullet1Prefab);
             }
-            // const bullet1 = instantiate(this.bullet1Prefab);
+
+            // 设置子弹组件的isBullet1属性
+            const bulletComp = bullet1.getComponent(Bullet);
+            if (bulletComp) {
+                bulletComp.isBullet1 = true;
+            }
+
             this.bulletParent.addChild(bullet1);
             bullet1.setWorldPosition(this.bulletPosition1.worldPosition);
         }
     }
+
     TwoShoot(dt: number) {
         // 更新双发射击计时器
         this.twoShootTimer += dt;
@@ -311,22 +314,25 @@ export class Player extends Component {
 
             this.shootTimer = 0;
 
-            // 从对象池获取两颗子弹
+            // 从对象池管理器获取两颗子弹
             let bullet1, bullet2;
+            const bulletPool = BulletPoolManager.instance.bullet2Pool;
 
             // 获取子弹
-            if (this.bullet2Pool.size() > 0) {
-                bullet1 = this.bullet2Pool.get();
-                bullet2 = this.bullet2Pool.get();
-
+            if (bulletPool.size() > 0) {
+                bullet1 = bulletPool.get();
+                bullet2 = bulletPool.size() > 0 ? bulletPool.get() : instantiate(this.bullet2Prefab);
             } else {
                 bullet1 = instantiate(this.bullet2Prefab);
                 bullet2 = instantiate(this.bullet2Prefab);
-
             }
 
-            // const bullet1 = instantiate(this.bullet2Prefab);
-            // const bullet2 = instantiate(this.bullet2Prefab);
+            // 设置子弹组件的isBullet1属性
+            const bulletComp1 = bullet1.getComponent(Bullet);
+            const bulletComp2 = bullet2.getComponent(Bullet);
+            if (bulletComp1) bulletComp1.isBullet1 = false;
+            if (bulletComp2) bulletComp2.isBullet1 = false;
+
             this.bulletParent.addChild(bullet1);
             this.bulletParent.addChild(bullet2);
             bullet1.setWorldPosition(this.bulletPosition2.worldPosition);

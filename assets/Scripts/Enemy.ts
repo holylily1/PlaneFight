@@ -4,6 +4,7 @@ import { GameManager } from './GameManager';
 import { SceneItemManager } from './SceneItemManager';
 import { AudioMgr } from './AudioMgr';
 import { Player } from './Player';
+import { BulletPoolManager } from './BulletPoolManager';
 const { ccclass, property } = _decorator;
 
 /**
@@ -52,10 +53,18 @@ export class Enemy extends Component {
     }
 
     onBeginContact(selfCollider: Collider2D, otherCollider: Collider2D, contact: IPhysics2DContact | null) {
-        // 延迟销毁子弹，等待物理引擎完成当前帧的处理
+        // 延迟回收子弹，等待物理引擎完成当前帧的处理
         this.scheduleOnce(() => {
-            if (otherCollider.node && otherCollider.node.isValid && otherCollider.getComponent(Bullet)) {
-                otherCollider.node.destroy();
+            if (otherCollider.node && otherCollider.node.isValid) {
+                const bulletComp = otherCollider.getComponent(Bullet);
+                if (bulletComp) {
+                    // 使用对象池管理器回收子弹，而不是直接销毁
+                    if (bulletComp.isBullet1) {
+                        BulletPoolManager.instance.bullet1Pool.put(otherCollider.node);
+                    } else {
+                        BulletPoolManager.instance.bullet2Pool.put(otherCollider.node);
+                    }
+                }
             }
         }, 0);
 
