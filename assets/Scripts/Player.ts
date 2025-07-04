@@ -1,4 +1,4 @@
-import { _decorator, Animation, AudioClip, Collider, Collider2D, Component, Contact2DType, director, Enum, EventTouch, input, Input, instantiate, IPhysics2DContact, Node, Prefab, UITransform, view } from 'cc';
+import { _decorator, Animation, AudioClip, Collider, Collider2D, Component, Contact2DType, director, Enum, EventTouch, input, Input, instantiate, IPhysics2DContact, Node, NodePool, Prefab, UITransform, view } from 'cc';
 import { Reward, RewardType } from './Reward';
 import { GameManager } from './GameManager';
 import { HpUI } from './UI/HpUI';
@@ -21,6 +21,12 @@ enum ShootType {
  */
 @ccclass('Player')
 export class Player extends Component {
+    // ======================
+    // 对象池相关属性
+    // ======================
+    public bullet1Pool: NodePool = null!;  // 单发子弹对象池
+    public bullet2Pool: NodePool = null!;  // 双发子弹对象池
+
     // ======================
     // 射击相关属性
     // ======================
@@ -102,6 +108,16 @@ export class Player extends Component {
         if (collider) {
             collider.on(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
+        //对象池1
+        this.bullet1Pool = new NodePool();
+        this.bullet2Pool = new NodePool();
+        let initCount = 10;
+        for (let i = 0; i < initCount; ++i) {
+            let bullet1 = instantiate(this.bullet1Prefab); // 创建节点
+            let bullet2 = instantiate(this.bullet2Prefab);
+            this.bullet1Pool.put(bullet1); // 通过 put 接口放入对象池
+            this.bullet2Pool.put(bullet2); // 通过 put 接口放入对象池
+        }
     }
 
     protected onDestroy(): void {
@@ -113,6 +129,8 @@ export class Player extends Component {
         if (collider) {
             collider.off(Contact2DType.BEGIN_CONTACT, this.onBeginContact, this);
         }
+        // 清空对象池
+        this.bullet1Pool.clear();
     }
     // ======================
     // 碰撞处理方法
@@ -262,7 +280,13 @@ export class Player extends Component {
         if (this.shootTimer > this.shootRate) {
             AudioMgr.inst.playOneShot(this.bulletAudio, 0.05);
             this.shootTimer = 0;
-            const bullet1 = instantiate(this.bullet1Prefab);
+            let bullet1;
+            if (this.bullet1Pool.size() > 0) {
+                bullet1 = this.bullet1Pool.get();
+            } else {
+                bullet1 = instantiate(this.bullet1Prefab);
+            }
+            // const bullet1 = instantiate(this.bullet1Prefab);
             this.bulletParent.addChild(bullet1);
             bullet1.setWorldPosition(this.bulletPosition1.worldPosition);
         }
@@ -286,8 +310,23 @@ export class Player extends Component {
             AudioMgr.inst.playOneShot(this.bulletAudio, 0.03);
 
             this.shootTimer = 0;
-            const bullet1 = instantiate(this.bullet2Prefab);
-            const bullet2 = instantiate(this.bullet2Prefab);
+
+            // 从对象池获取两颗子弹
+            let bullet1, bullet2;
+
+            // 获取子弹
+            if (this.bullet2Pool.size() > 0) {
+                bullet1 = this.bullet2Pool.get();
+                bullet2 = this.bullet2Pool.get();
+
+            } else {
+                bullet1 = instantiate(this.bullet2Prefab);
+                bullet2 = instantiate(this.bullet2Prefab);
+
+            }
+
+            // const bullet1 = instantiate(this.bullet2Prefab);
+            // const bullet2 = instantiate(this.bullet2Prefab);
             this.bulletParent.addChild(bullet1);
             this.bulletParent.addChild(bullet2);
             bullet1.setWorldPosition(this.bulletPosition2.worldPosition);

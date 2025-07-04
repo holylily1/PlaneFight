@@ -2,5 +2,68 @@
   "__version__": "1.3.7",
   "log": {
     "level": 2
+  },
+  "common": {
+    "polyfills": {
+      "asyncFunctions": true
+    },
+    "buildPath": "project://build",
+    "outputName": "wechatgame",
+    "mainBundleCompressionType": "merge_dep",
+    "platform": "wechatgame",
+    "name": "飞机大战"
+  },
+  "BuildTaskManager": {
+    "taskMap": {
+      "1750827468681": {
+        "type": "build",
+        "id": "1750827468681",
+        "progress": 1,
+        "state": "success",
+        "stage": "run",
+        "message": "2025-6-25 13:43:46 run package D:\\CODE\\飞机大战\\PlaneFight\\build\\wechatgame success!",
+        "options": {
+          "name": "飞机大战",
+          "server": "",
+          "platform": "wechatgame",
+          "buildPath": "project://build",
+          "debug": false,
+          "md5Cache": false,
+          "skipCompressTexture": false,
+          "sourceMaps": false,
+          "polyfills": {
+            "asyncFunctions": false
+          },
+          "experimentalEraseModules": false,
+          "startSceneAssetBundle": false,
+          "bundleConfigs": [],
+          "useBuiltinServer": false,
+          "mainBundleIsRemote": false,
+          "mainBundleCompressionType": "merge_dep",
+          "useSplashScreen": true,
+          "bundleCommonChunk": false,
+          "packAutoAtlas": true,
+          "startScene": "834405c9-6357-41b9-90d8-10f7ae26c9aa",
+          "outputName": "wechatgame",
+          "taskName": "wechatgame",
+          "scenes": [
+            {
+              "url": "db://assets/Scenes/01-Start.scene",
+              "uuid": "834405c9-6357-41b9-90d8-10f7ae26c9aa"
+            },
+            {
+              "url": "db://assets/Scenes/02-GameScene.scene",
+              "uuid": "a5a85479-5a81-4edf-8920-e479c92e49e1"
+            }
+          ],
+          "packages": {},
+          "__version__": "1.3.7",
+          "buildMode": "normal",
+          "logDest": "project://temp/builder/log/wechatgame2025-6-25 12-57.log"
+        },
+        "time": "2025-6-25 13:01:15",
+        "dirty": false
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { _decorator, AudioClip, Component, director, game, Node } from 'cc';
+import { _decorator, AudioClip, Component, director, game, instantiate, Node, Prefab } from 'cc';
 import { GameOverUI } from './UI/GameOverUI';
 import { AudioMgr } from './AudioMgr';
 import { SceneItemManager } from './SceneItemManager';
@@ -13,7 +13,6 @@ const { ccclass, property } = _decorator;
  */
 @ccclass('GameManager')
 export class GameManager extends Component {
-
     // ======================
     // 游戏状态属性
     // ======================
@@ -43,7 +42,6 @@ export class GameManager extends Component {
     buttonAudio: AudioClip = null;   // 按钮点击音效
     @property(AudioClip)
     gameOverAudio: AudioClip = null; // 游戏结束音效
-
 
     // ======================
     // 单例模式实现

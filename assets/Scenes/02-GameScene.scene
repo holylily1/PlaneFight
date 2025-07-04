@@ -1125,17 +1125,17 @@
       "__uuid__": "d96ded7e-8158-4281-b438-7749a39f53aa",
       "__expectedType__": "cc.Prefab"
     },
-    "enemy0SpawnRate": 0.3,
+    "enemy0SpawnRate": 0.5,
     "enemy1Prefab": {
       "__uuid__": "b1be7fa2-ce13-4c50-a40f-cc3b0879b287",
       "__expectedType__": "cc.Prefab"
     },
-    "enemy1SpawnRate": 2,
+    "enemy1SpawnRate": 3,
     "enemy2Prefab": {
       "__uuid__": "b528a252-dec5-4305-8485-6f18f7cfbf60",
       "__expectedType__": "cc.Prefab"
     },
-    "enemy2SpawnRate": 5,
+    "enemy2SpawnRate": 6,
     "reward1Prefab": {
       "__uuid__": "2038ae9f-0d49-4797-a332-deeb7de3aa02",
       "__expectedType__": "cc.Prefab"
