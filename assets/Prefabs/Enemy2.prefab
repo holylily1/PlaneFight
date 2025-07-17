@@ -254,13 +254,13 @@
       "__id__": 11
     },
     "speed": 75,
+    "hp": 10,
+    "score": 900,
     "anim": {
       "__id__": 7
     },
-    "hp": 10,
     "animHit": "Enemy2_Hit",
     "animDown": "Enemy2_Down",
-    "score": 900,
     "enemyDownAudio": {
       "__uuid__": "274773cb-498a-4220-876a-a2dae3501e82",
       "__expectedType__": "cc.AudioClip"
@@ -400,6 +400,7 @@
       "__id__": 0
     },
     "fileId": "d2NliwhkBD5JIYeDyxG/kC",
+    "instance": null,
     "targetOverrides": []
   }
 ]

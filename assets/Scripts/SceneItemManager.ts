@@ -2,6 +2,7 @@ import { _decorator, AudioClip, Component, input, Input, instantiate, math, Node
 import { GameManager } from './GameManager';
 import { Enemy } from './Enemy';
 import { AudioMgr } from './AudioMgr';
+import { Boss } from './Boss';  // 导入Boss类
 const { ccclass, property } = _decorator;
 
 /**
@@ -135,13 +136,37 @@ export class SceneItemManager extends Component {
     }
 
     /**
-     * 生成敌人2
+     * 生成Boss（使用敌人2预制体）
      */
     enemy2Spawn() {
-        const enemyNode = this.ItemSpawn(this.enemy2Prefab, -155, 155, 555);
+        // 检查是否满足生成Boss的条件
+        if(GameManager.getInstance().score < 100 || GameManager.getInstance().isBossSpawned){
+            return;    
+        }
+        
+        console.log("生成Boss");
+        GameManager.getInstance().isBossSpawned = true;
+        
+        // 在屏幕上方中央生成Boss
+        const enemyNode = this.ItemSpawn(this.enemy2Prefab, 0, 0, 555);
+        
+        // 获取Enemy组件
         const enemyComponent = enemyNode.getComponent(Enemy);
+        
+        // 添加Boss组件
+        const bossComponent = enemyNode.addComponent(Boss);
+        
+        // 如果有Enemy组件，复制其属性到Boss组件
         if (enemyComponent) {
-            this.enemyArray.push(enemyComponent);
+            // 复制必要的属性
+            bossComponent.speed = enemyComponent.speed;
+            bossComponent.anim = enemyComponent.anim;
+            bossComponent.animHit = enemyComponent.animHit;
+            bossComponent.animDown = enemyComponent.animDown;
+            bossComponent.enemyDownAudio = enemyComponent.enemyDownAudio;
+            
+            // 移除原始的Enemy组件
+            enemyNode.removeComponent(Enemy);
         }
     }
 
@@ -160,7 +185,7 @@ export class SceneItemManager extends Component {
     }
 
     /**
-     * 通用物品生成方法
+     * 通用生成方法
      */
     ItemSpawn(enemyPrefab: Prefab, minX: number, maxX: number, y: number): Node {
         const enemy = instantiate(enemyPrefab);

@@ -105,7 +105,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 240,
-      "y": 424.99999999999994,
+      "y": 425.00000000000006,
       "z": 0
     },
     "_lrot": {
@@ -190,7 +190,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 424.99999999999994,
+    "_orthoHeight": 425,
     "_near": 0,
     "_far": 1000,
     "_color": {
@@ -1129,7 +1129,7 @@
       "__uuid__": "b528a252-dec5-4305-8485-6f18f7cfbf60",
       "__expectedType__": "cc.Prefab"
     },
-    "enemy2SpawnRate": 7,
+    "enemy2SpawnRate": 0,
     "reward1Prefab": {
       "__uuid__": "2038ae9f-0d49-4797-a332-deeb7de3aa02",
       "__expectedType__": "cc.Prefab"
@@ -1279,7 +1279,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": -216.222,
-      "y": 400.3419999999999,
+      "y": 400.342,
       "z": 0
     },
     "_lrot": {
@@ -1352,7 +1352,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 240,
-      "y": 424.99999999999994,
+      "y": 425,
       "z": 0
     },
     "_lrot": {
@@ -1437,7 +1437,7 @@
     "_priority": 1,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 424.99999999999994,
+    "_orthoHeight": 425,
     "_near": 0,
     "_far": 1000,
     "_color": {
@@ -1504,7 +1504,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": -200.769,
-      "y": -389.3709999999999,
+      "y": -389.371,
       "z": 0
     },
     "_lrot": {
@@ -1935,7 +1935,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 176.223,
-      "y": -394.35099999999994,
+      "y": -394.351,
       "z": 0
     },
     "_lrot": {
@@ -2360,7 +2360,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": -146.40600000000003,
-      "y": 377.8709999999999,
+      "y": 377.871,
       "z": 0
     },
     "_lrot": {
@@ -3576,7 +3576,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 480,
-      "height": 849.9999999999999
+      "height": 850
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3807,7 +3807,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 480,
-      "height": 849.9999999999998
+      "height": 850
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

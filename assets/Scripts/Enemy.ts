@@ -19,6 +19,9 @@ export class Enemy extends Component {
     hp: number = 1;                 // 敌人生命值
     @property
     score: number = 100;            // 击败敌人获得的分数
+    
+    // 状态标志
+    protected isDyied: boolean = false;  // 是否已经死亡
 
     // 动画相关
     @property(Animation)
@@ -77,22 +80,9 @@ export class Enemy extends Component {
         // 禁用碰撞器，防止动画播放过程中继续触发碰撞
         this.collider.enabled = false;
 
-        // 检查动画组件是否存在
+        // 检查生命值
         if (this.hp <= 0) {
-            AudioMgr.inst.playOneShot(this.enemyDownAudio)
-            let state = this.anim.play(this.animDown);
-            // 监听死亡动画完成事件
-            this.anim.on(Animation.EventType.FINISHED, () => {
-                // 死亡动画播放完成后销毁节点
-                if (this.node.isValid) {
-                    this.node.destroy();
-                }
-                // 移除事件监听
-                this.anim.off(Animation.EventType.FINISHED);
-            }, this);
-
-            // 记录得分
-            GameManager.getInstance().addScore(this.score);
+            this.die();
         }
         else {
             let state = this.anim.play(this.animHit);
@@ -108,17 +98,48 @@ export class Enemy extends Component {
         }
     }
 
+    /**
+     * 敌人死亡方法
+     */
+    protected die() {
+        // 如果已经在死亡过程中，直接返回
+        if (this.isDyied) {
+            return;
+        }
+        
+        // 标记为已死亡
+        this.isDyied = true;
+        
+        // 播放死亡音效
+        AudioMgr.inst.playOneShot(this.enemyDownAudio);
+        
+        // 播放死亡动画
+        if (this.anim) {
+            let state = this.anim.play(this.animDown);
+            // 监听死亡动画完成事件
+            this.anim.on(Animation.EventType.FINISHED, () => {
+                // 死亡动画播放完成后销毁节点
+                if (this.node.isValid) {
+                    this.node.destroy();
+                }
+                // 移除事件监听
+                this.anim.off(Animation.EventType.FINISHED);
+            }, this);
+        } else {
+            // 如果没有动画组件，直接销毁节点
+            this.node.destroy();
+        }
+        
+        // 记录得分
+        GameManager.getInstance().addScore(this.score);
+    }
+
     update(deltaTime: number) {
         if (this.hp > 0) {
             const p = this.node.position;
             this.node.setPosition(p.x, p.y - this.speed * deltaTime, p.z);
-        } else if (this.hp <= 0) {
-
-            // 检查是否有动画正在播放0
-            if (!this.anim || !this.anim.getState(this.animDown).isPlaying) {
-                // 如果没有动画或动画不在播放，销毁节点
-                this.node.destroy();
-            }
+        } else if (this.hp <= 0 && !this.isDyied) {
+            this.die();
         }
         if (this.node.position.y < -470) {
             if (this.hp > 0) { // 只有活着的敌人越界才减血

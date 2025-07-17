@@ -22,6 +22,7 @@ export class GameManager extends Component {
     hpNumber: number = 3;    // 当前生命值
     @property
     score: number = 0;       // 当前分数
+    isBossSpawned: boolean = false;  // 是否生成过boss
 
     // ======================
     // UI节点引用

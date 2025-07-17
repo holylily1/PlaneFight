@@ -225,6 +225,13 @@ export class Player extends Component {
     transitionToOneShoot() {
         this.shootType = ShootType.OneShoot;
         this.twoShootTimer = 0;  // 重置计时器
+        
+        // 清空双发子弹对象池，防止蓝色子弹被错误回收
+        const bullet2Pool = BulletPoolManager.instance.bullet2Pool;
+        while (bullet2Pool.size() > 0) {
+            const node = bullet2Pool.get();
+            node.destroy();
+        }
     }
     // ======================
     // 触摸控制方法
@@ -273,17 +280,19 @@ export class Player extends Component {
             AudioMgr.inst.playOneShot(this.bulletAudio, 0.05);
             this.shootTimer = 0;
 
-            // 从对象池管理器获取子弹
+            // 始终使用黄色子弹（单发子弹）
             let bullet1;
+            
+            // 优先从单发子弹对象池获取
             const bulletPool = BulletPoolManager.instance.bullet1Pool;
-
             if (bulletPool.size() > 0) {
                 bullet1 = bulletPool.get();
             } else {
+                // 如果单发子弹对象池为空，则实例化新的黄色子弹
                 bullet1 = instantiate(this.bullet1Prefab);
             }
 
-            // 设置子弹组件的isOneShoot属性
+            // 确保设置正确的isOneShoot属性
             const bulletComp = bullet1.getComponent(Bullet);
             if (bulletComp) {
                 bulletComp.isOneShoot = true;
