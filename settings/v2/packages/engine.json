@@ -118,6 +118,9 @@
       "marionette": {
         "_value": false
       },
+      "procedural-animation": {
+        "_value": false
+      },
       "custom-pipeline": {
         "_value": false
       }

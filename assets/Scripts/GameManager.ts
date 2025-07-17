@@ -86,6 +86,7 @@ export class GameManager extends Component {
         director.pause(); // 暂停游戏
         this.pauseButton.active = false;
         this.resumeButton.active = true;
+        AudioMgr.inst.pause(); // 暂停背景音乐
     }
 
     public onResumeButton() {
@@ -93,6 +94,7 @@ export class GameManager extends Component {
         director.resume(); // 恢复游戏
         this.pauseButton.active = true;
         this.resumeButton.active = false;
+        AudioMgr.inst.resume(); // 恢复背景音乐
     }
     // ======================
     // 游戏结束处理

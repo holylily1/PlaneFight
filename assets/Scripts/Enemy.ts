@@ -59,7 +59,7 @@ export class Enemy extends Component {
                 const bulletComp = otherCollider.getComponent(Bullet);
                 if (bulletComp) {
                     // 使用对象池管理器回收子弹，而不是直接销毁
-                    if (bulletComp.isBullet1) {
+                    if (bulletComp.isOneShoot) {
                         BulletPoolManager.instance.bullet1Pool.put(otherCollider.node);
                     } else {
                         BulletPoolManager.instance.bullet2Pool.put(otherCollider.node);

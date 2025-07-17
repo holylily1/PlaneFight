@@ -283,10 +283,10 @@ export class Player extends Component {
                 bullet1 = instantiate(this.bullet1Prefab);
             }
 
-            // 设置子弹组件的isBullet1属性
+            // 设置子弹组件的isOneShoot属性
             const bulletComp = bullet1.getComponent(Bullet);
             if (bulletComp) {
-                bulletComp.isBullet1 = true;
+                bulletComp.isOneShoot = true;
             }
 
             this.bulletParent.addChild(bullet1);
@@ -327,11 +327,11 @@ export class Player extends Component {
                 bullet2 = instantiate(this.bullet2Prefab);
             }
 
-            // 设置子弹组件的isBullet1属性
+            // 设置子弹组件的isOneShoot属性
             const bulletComp1 = bullet1.getComponent(Bullet);
             const bulletComp2 = bullet2.getComponent(Bullet);
-            if (bulletComp1) bulletComp1.isBullet1 = false;
-            if (bulletComp2) bulletComp2.isBullet1 = false;
+            if (bulletComp1) bulletComp1.isOneShoot = false;
+            if (bulletComp2) bulletComp2.isOneShoot = false;
 
             this.bulletParent.addChild(bullet1);
             this.bulletParent.addChild(bullet2);
