@@ -1,5 +1,7 @@
 import { _decorator, Animation, Node, Vec3 } from 'cc';
 import { Enemy } from './Enemy';
+import { SceneItemManager } from './SceneItemManager';
+import { GameManager } from './GameManager';
 
 const { ccclass, property } = _decorator;
 
@@ -34,8 +36,8 @@ export class Boss extends Enemy {
         super.start();  // 调用父类的start方法
         
         // Boss特有的初始化
-        this.hp =100;  // 生命值
-        this.score =20000;  // 分数奖励
+        this.hp =40;  // 生命值
+        this.score =1000;  // 分数奖励
         this.node.scale = new Vec3(1.3, 1.3, 1);  // 放大1.5倍
         
         console.log("Boss已生成!生命值:", this.hp);
@@ -43,7 +45,10 @@ export class Boss extends Enemy {
     
     update(deltaTime: number) {
         // 只有在Boss还活着时才处理移动
-        if (this.hp > 0) {
+        if (this.hp <= 0 || this.isDyied) {
+            GameManager.getInstance().isBossSpawned = false;
+            return;         
+        }
             const p = this.node.position;
             
             if (!this.isPositioned && p.y > this.targetY) {
@@ -54,8 +59,8 @@ export class Boss extends Enemy {
                 if (!this.isDashing && !this.isReturning) {
                     this.move(deltaTime);
                     this.dashTimer += deltaTime;
-                    //每8秒冲刺一次
-                    if (this.dashTimer > 8) {
+                    //每5秒冲刺一次
+                    if (this.dashTimer > 5) {
                         this.isDashing = true;
                         this.dashTimer = 0;  // 重置dash计时器
                     }
@@ -65,10 +70,7 @@ export class Boss extends Enemy {
                     this.dash(deltaTime);
                 }
             }
-        } else if (this.hp <= 0 && !this.isDyied) {
-            // 如果Boss已死亡，调用死亡方法
-            this.die();
-        }
+        
         
     }
     move(deltaTime: number) {
@@ -104,5 +106,5 @@ export class Boss extends Enemy {
             }
         }
     }
-    
+     
 }

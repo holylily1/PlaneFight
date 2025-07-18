@@ -1,4 +1,4 @@
-import { _decorator, AudioClip, Component, input, Input, instantiate, math, Node, Prefab } from 'cc';
+import { _decorator, AudioClip, Component, game, input, Input, instantiate, math, Node, Prefab } from 'cc';
 import { GameManager } from './GameManager';
 import { Enemy } from './Enemy';
 import { AudioMgr } from './AudioMgr';
@@ -45,6 +45,7 @@ export class SceneItemManager extends Component {
     // ======================
     doubleClickInterval: number = 0.2;  // 双击间隔时间(秒)
     lastClickTime: number = 0;          // 上次点击时间
+    lastBombTime: number = Date.now();  // 上次使用炸弹时间(毫秒)
 
     // ======================
     // 敌人管理
@@ -139,16 +140,18 @@ export class SceneItemManager extends Component {
      * 生成Boss（使用敌人2预制体）
      */
     enemy2Spawn() {
-        // 检查是否满足生成Boss的条件
-        if(GameManager.getInstance().score < 100 || GameManager.getInstance().isBossSpawned){
-            return;    
+        const gm = GameManager.getInstance();
+    
+        // 数学判断：当前分数是否达到新的10000分区间，且没有Boss存在
+        if(gm.score -gm.bossCounter*10000< 10000 || gm.isBossSpawned) {
+            return;
         }
-        
-        console.log("生成Boss");
-        GameManager.getInstance().isBossSpawned = true;
+        gm.bossCounter++;
+        console.log("生成Boss at 分数:", gm.score);
+        gm.isBossSpawned = true;
         
         // 在屏幕上方中央生成Boss
-        const enemyNode = this.ItemSpawn(this.enemy2Prefab, 0, 0, 555);
+        const enemyNode = this.ItemSpawn(this.enemy2Prefab, 0, 0, 600);
         
         // 获取Enemy组件
         const enemyComponent = enemyNode.getComponent(Enemy);
@@ -215,6 +218,11 @@ export class SceneItemManager extends Component {
      * 双击处理逻辑 - 使用炸弹
      */
     onDoubleClick(event) {
+        const now = Date.now();
+        if (now - this.lastBombTime < 1000) {  // 1000ms=1秒冷却
+            console.log('炸弹冷却中，剩余时间:', (1000 - (now - this.lastBombTime)) + 'ms');
+            return;
+        }
         if (!GameManager.getInstance().isHaveBomb()) return;  // 没有炸弹则返回
 
         // 触发所有敌人的死亡动画
@@ -230,6 +238,8 @@ export class SceneItemManager extends Component {
 
         // 使用炸弹
         GameManager.getInstance().bombNumber--;  // 减少炸弹数量
+        this.lastBombTime = Date.now();  // 记录炸弹使用时间(毫秒)
+        console.log('炸弹使用时间已更新:', this.lastBombTime);
         GameManager.getInstance().node.emit('onBombChange');  // 通知炸弹数量变化
         AudioMgr.inst.playOneShot(this.useBombAudio);  // 播放炸弹音效
     }

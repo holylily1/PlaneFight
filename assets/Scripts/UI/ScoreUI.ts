@@ -6,7 +6,6 @@ const { ccclass, property } = _decorator;
 export class ScoreUI extends Component {
     @property(LabelComponent)
     numberLabel: LabelComponent = null;
-    score: number = 0;
     start() {
         GameManager.getInstance().node.on("onScoreChange", this.onScoreChange, this)
     }

@@ -23,6 +23,7 @@ export class GameManager extends Component {
     @property
     score: number = 0;       // 当前分数
     isBossSpawned: boolean = false;  // 是否生成过boss
+    bossCounter: number = 0;        // boss生成计数器
 
     // ======================
     // UI节点引用
@@ -115,7 +116,8 @@ export class GameManager extends Component {
                 }
             }
         }
-
+        this.bossCounter=0; // 重置boss生成计数器
+        this.isBossSpawned = false; // 重置boss生成状态
         this.onPauseButton(); // 暂停游戏
 
         // 最高分处理
