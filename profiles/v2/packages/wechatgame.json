@@ -37,11 +37,9 @@
         "buildOpenDataContextTemplate": "",
         "separateEngine": false,
         "highPerformanceMode": false,
-        "enabelWebGL2": "off",
-        "wasm": "wasm",
         "__version__": "1.0.4"
       }
     },
-    "__version__": "1.3.7"
+    "__version__": "1.3.9"
   }
 }

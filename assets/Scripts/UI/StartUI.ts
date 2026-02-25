@@ -1,5 +1,5 @@
 import { _decorator, Component, director, Node, AudioClip } from 'cc';
-import { AudioMgr } from './AudioMgr';
+import { AudioMgr } from 'db://assets/Scripts/Mgr/AudioMgr';
 const { ccclass, property } = _decorator;
 
 @ccclass('StartUI')

@@ -1,7 +1,7 @@
 {
-  "__version__": "1.3.7",
+  "__version__": "1.3.9",
   "log": {
-    "level": 1
+    "level": 2
   },
   "common": {
     "polyfills": {
@@ -22,6 +22,7 @@
         "state": "success",
         "stage": "run",
         "message": "2025-7-11 11:50:04 run package D:\\CODE\\飞机大战\\PlaneFight\\build\\wechatgame success!",
+        "detailMessage": "",
         "options": {
           "name": "飞机大战",
           "server": "",
@@ -59,7 +60,18 @@
           "packages": {},
           "__version__": "1.3.7",
           "buildMode": "normal",
-          "logDest": "project://temp/builder/log/wechatgame2025-7-11 11-24.log"
+          "logDest": "project://temp/builder/log/wechatgame2025-7-11 11-24.log",
+          "overwriteProjectSettings": {
+            "includeModules": {
+              "physics": "physics-ammo",
+              "physics-2d": "inherit-project-setting",
+              "gfx-webgl2": "off"
+            },
+            "macroConfig": {
+              "cleanupImageCache": "on"
+            }
+          },
+          "nativeCodeBundleMode": "wasm"
         },
         "time": "2025-7-11 11:24:13",
         "dirty": false

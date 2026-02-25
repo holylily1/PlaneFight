@@ -1,18 +1,17 @@
-import { _decorator, Component, LabelComponent, Node } from 'cc';
-import { GameManager } from '../GameManager';
+import { _decorator, Component, LabelComponent } from "cc";
+import { GameManager } from "../Mgr/GameManager";
 const { ccclass, property } = _decorator;
 
-@ccclass('Bomb')
+@ccclass("Bomb")
 export class Bomb extends Component {
-    @property(LabelComponent)
-    numberLabel: LabelComponent = null;
+  @property(LabelComponent)
+  numberLabel: LabelComponent = null;
 
-    start() {
-        GameManager.getInstance().node.on("onBombChange", this.onBombChange, this)
-    }
+  start() {
+    GameManager.ins().node.on("onBombChange", this.onBombChange, this);
+  }
 
-    onBombChange = () => {
-        this.numberLabel.string = GameManager.getInstance().bombNumber.toString();
-    }
+  onBombChange = () => {
+    this.numberLabel.string = GameManager.ins().bombNumber.toString();
+  };
 }
-

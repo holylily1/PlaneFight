@@ -1,18 +1,16 @@
-import { _decorator, Component, LabelComponent, Node } from 'cc';
-import { GameManager } from '../GameManager';
+import { _decorator, Component, LabelComponent } from "cc";
+import { GameManager } from "../Mgr/GameManager";
 const { ccclass, property } = _decorator;
 
-@ccclass('HpUI')
+@ccclass("HpUI")
 export class HpUI extends Component {
-    @property(LabelComponent)
-    numberLabel: LabelComponent = null;
-    start() {
-        GameManager.getInstance().node.on("onHpChange", this.onHpChange, this)
-    }
+  @property(LabelComponent)
+  numberLabel: LabelComponent = null;
+  start() {
+    GameManager.ins().node.on("onHpChange", this.onHpChange, this);
+  }
 
-    onHpChange = () => {
-        this.numberLabel.string = GameManager.getInstance().hpNumber.toString();
-    }
+  onHpChange = () => {
+    this.numberLabel.string = GameManager.ins().hpNumber.toString();
+  };
 }
-
-

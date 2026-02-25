@@ -1,5 +1,5 @@
 import { _decorator, Component, director, LabelComponent, Node } from 'cc';
-import { GameManager } from '../GameManager';
+import { GameManager } from '../Mgr/GameManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('GameOverUI')
